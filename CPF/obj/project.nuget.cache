@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "08/Tw8QLZ7VJqmzofQpGlHbJ/KcEz9TJK0QLSng0W/nb0ufXKylp7MbU6HcrzeYZqpbLkIXEXBOWUU9+Q9Bo4g==",
+  "success": true,
+  "projectFilePath": "D:\\Programming\\C#\\Projects\\Personal\\Else\\CPF\\CPF\\CPF.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tocho\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0-preview.7.21377.19\\microsoft.win32.systemevents.6.0.0-preview.7.21377.19.nupkg.sha512",
+    "C:\\Users\\tocho\\.nuget\\packages\\system.drawing.common\\6.0.0-preview.7.21377.19\\system.drawing.common.6.0.0-preview.7.21377.19.nupkg.sha512"
+  ],
+  "logs": []
+}
