@@ -8,23 +8,30 @@ namespace CPF.Components
         private int Height { get; set; }
         private int PosX { get; set; }
         private int PosY { get; set; }
+        private int MousePosX { get; set; }
+        private int MousePosY { get; set; }
         private ConsoleColor Color { get; set; }
+        private ConsoleColor HoverColor { get; set; }
+        private ConsoleColor CurrentColor { get; set; }
         private string Text { get; set; }
         private delegate void ButtonOperation();
 
-        private ButtonOperation _buttonOperation;
+        private ButtonOperation _buttonClickOperation;
+        private ButtonOperation _buttonHoverOperation;
         private bool breakLoop = false;
 
-        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonMethod)
+        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonClickMethod, ConsoleColor hoverColor)
         {
             Width = width;
             Height = height;
             PosX = posX - 1;
             PosY = posY;
+            HoverColor = hoverColor;
             Color = color;
+            CurrentColor = color;
             Text = text;
             
-            _buttonOperation = new ButtonOperation(buttonMethod);
+            _buttonClickOperation = new ButtonOperation(buttonClickMethod);
 
             Draw();
         }
@@ -35,7 +42,7 @@ namespace CPF.Components
             {
                 for (int x = PosX; x < Width + PosX; x++)
                 {
-                    Data.ColorBuffer[x, y] = Color;
+                    Data.ColorBuffer[x, y] = CurrentColor;
                 }
             }
 
@@ -44,16 +51,46 @@ namespace CPF.Components
         }
         public override void OnButtonClicked(NativeMethods.MOUSE_EVENT_RECORD r)
         {
+            MousePosX = r.dwMousePosition.X;
+            MousePosY = r.dwMousePosition.Y;
+
+            if (PositionCheck(MousePosX, MousePosY)) 
+                _buttonClickOperation?.Invoke();
+        }
+
+        public override void OnButtonHover(NativeMethods.MOUSE_EVENT_RECORD r)
+        {
+            MousePosX = r.dwMousePosition.X;
+            MousePosY = r.dwMousePosition.Y;
+
+            if (PositionCheck(MousePosX, MousePosY))
+            {
+                CurrentColor = HoverColor;
+            }
+            else
+            {
+                CurrentColor = Color;
+            }
+            
+            Draw();
+            
+            Data.OutPutBuffer();
+        }
+
+        private bool PositionCheck(int posX, int posY)
+        {
             for (int y = PosY; y < Height + PosY; y++)
             {
-                for (int x = PosX; x < Width + PosX; x++)
+                for (int x = PosX + 1; x < Width + PosX + 1; x++)
                 {
-                    if (r.dwMousePosition.X == x && r.dwMousePosition.Y == y)
+                    if (posX == x && posY == y)
                     {
-                        _buttonOperation?.Invoke();
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
     }
 }

@@ -15,33 +15,17 @@ namespace CPF
             IntPtr inHandle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
             uint mode = 0;
             NativeMethods.GetConsoleMode(inHandle, ref mode);
-            mode &= ~NativeMethods.ENABLE_QUICK_EDIT_MODE; 
-            mode |= NativeMethods.ENABLE_WINDOW_INPUT; 
-            mode |= NativeMethods.ENABLE_MOUSE_INPUT; 
+            mode &= ~NativeMethods.ENABLE_QUICK_EDIT_MODE;
+            mode |= NativeMethods.ENABLE_WINDOW_INPUT;
+            mode |= NativeMethods.ENABLE_MOUSE_INPUT;
             NativeMethods.SetConsoleMode(inHandle, mode);
             ConsoleListener.Start();
-            
-            ConsoleListener.LeftMouseClickEvent += OnLeftMouseClicked;
-            ConsoleListener.OnButtonClicked += OnButtonClicked;
-            Data.PropertyChanged += OnPropertyChanged;
-        }
-        private void DrawWindow()
-        {
-            for (int y = 0; y < 30; y++)
-            {
-                for (int x = 0; x < 30; x++)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(Data.Buffer[x, y]);
-                    Console.BackgroundColor = Data.ColorBuffer[x, y];
-                }
-            }
-        }
 
-        //Could be made virtual in future
-        private void OnPropertyChanged()
-        {
-            DrawWindow();
+            ConsoleListener.LeftMouseClickEvent += OnLeftMouseClicked;
+            ConsoleListener.ButtonClickEvent += OnButtonClicked;
+            ConsoleListener.ButtonHoverEvent += OnButtonHover;
+
+
         }
 
         public virtual void OnLeftMouseClicked(NativeMethods.MOUSE_EVENT_RECORD r)
@@ -51,6 +35,9 @@ namespace CPF
         {
         }
         public virtual void OnButtonClicked(NativeMethods.MOUSE_EVENT_RECORD r)
+        {
+        }
+        public virtual void OnButtonHover(NativeMethods.MOUSE_EVENT_RECORD r)
         {
         }
     }

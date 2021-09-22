@@ -17,7 +17,7 @@ namespace CPF
         public static ConsoleColor[,] ColorBuffer = new ConsoleColor[30, 30];
         public static char[,] Buffer { get; set; } = new char[30, 30];
 
-        public static void BufferChanged()
+        public static void OutPutBuffer()
         {
             for (int y = 0; y < 30; y++)
             {
@@ -32,7 +32,15 @@ namespace CPF
                 button.Draw();
             }
             
-            PropertyChanged?.Invoke();
+            for (int y = 0; y < 30; y++)
+            {
+                for (int x = 0; x < 30; x++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(Buffer[x, y]);
+                    Console.BackgroundColor = ColorBuffer[x, y];
+                }
+            }
         }
     }
 }
