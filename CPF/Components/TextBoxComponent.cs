@@ -57,7 +57,9 @@ namespace CPF.Components
                 Data.Buffer[i, PosY] = ' ';
             
             for (int i = PosX + 2; i < Text.Length + PosX + 2; i++)
-                Data.Buffer[i, PosY] = Text[i - PosX - 2];
+            {
+                Data.Buffer[i, (int)Math.Ceiling((double)Height / 2) + PosY - 1] = Text[i - PosX - 2];
+            }
 
             TempTextLength = Text.Length;
         }
@@ -75,7 +77,7 @@ namespace CPF.Components
                     {
                         break;
                     }
-                    else if (input.Key == ConsoleKey.Backspace)
+                    else if (input.Key == ConsoleKey.Backspace && Text.Length > 0)
                     {
                         var remove = Text.Remove(Text.Length - 1);
                         Text = remove;
@@ -83,8 +85,11 @@ namespace CPF.Components
                     }
                     else
                     {
-                        Text += character;
-                        Draw();
+                        if (Text.Length < Width - 2)
+                        {
+                            Text += character;
+                            Draw();
+                        }
                     }
                 }
             }

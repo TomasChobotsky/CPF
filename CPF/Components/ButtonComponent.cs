@@ -45,7 +45,9 @@ namespace CPF.Components
             }
 
             for (int i = PosX + 2; i < Text.Length + PosX + 2; i++)
-                Data.Buffer[i, PosY + 1] = Text[i - PosX - 2];
+            {
+                Data.Buffer[i, (int)Math.Ceiling((double)Height / 2) + PosY - 1] = Text[i - PosX - 2];
+            }
         }
         public override void OnComponentClicked(NativeMethods.MOUSE_EVENT_RECORD r)
         {
