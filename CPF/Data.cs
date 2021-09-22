@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using CPF.Components;
@@ -10,6 +11,7 @@ namespace CPF
     public static class Data
     {
         public static List<ButtonComponent> Buttons { get; set; } = new List<ButtonComponent>();
+        public static List<TextBoxComponent> TextBoxes { get; set; } = new List<TextBoxComponent>();
         public static event PropertyChangedEvent PropertyChanged;
         public delegate void PropertyChangedEvent();
 
@@ -30,6 +32,10 @@ namespace CPF
             foreach (var button in Buttons)
             {
                 button.Draw();
+            }
+            foreach (var textBox in TextBoxes)
+            {
+                textBox.Draw();
             }
             
             for (int y = 0; y < 30; y++)

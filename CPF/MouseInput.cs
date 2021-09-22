@@ -22,7 +22,7 @@ namespace CPF
             ConsoleListener.Start();
 
             ConsoleListener.LeftMouseClickEvent += OnLeftMouseClicked;
-            ConsoleListener.ButtonClickEvent += OnButtonClicked;
+            ConsoleListener.ComponentClickEvent += OnComponentClicked;
             ConsoleListener.ButtonHoverEvent += OnButtonHover;
 
 
@@ -34,11 +34,26 @@ namespace CPF
         public virtual void OnRightMouseClicked(NativeMethods.MOUSE_EVENT_RECORD r)
         {
         }
-        public virtual void OnButtonClicked(NativeMethods.MOUSE_EVENT_RECORD r)
+        public virtual void OnComponentClicked(NativeMethods.MOUSE_EVENT_RECORD r)
         {
         }
         public virtual void OnButtonHover(NativeMethods.MOUSE_EVENT_RECORD r)
         {
+        }
+        public bool PositionCheck(int posX, int posY, int mousePosX, int mousePosY, int width, int height)
+        {
+            for (int y = posY; y < height + posY; y++)
+            {
+                for (int x = posX + 1; x < width + posX + 1; x++)
+                {
+                    if (x == mousePosX && y == mousePosY)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -8,8 +8,6 @@ namespace CPF.Components
         private int Height { get; set; }
         private int PosX { get; set; }
         private int PosY { get; set; }
-        private int MousePosX { get; set; }
-        private int MousePosY { get; set; }
         private ConsoleColor Color { get; set; }
         private ConsoleColor HoverColor { get; set; }
         private ConsoleColor CurrentColor { get; set; }
@@ -49,21 +47,15 @@ namespace CPF.Components
             for (int i = PosX + 2; i < Text.Length + PosX + 2; i++)
                 Data.Buffer[i, PosY + 1] = Text[i - PosX - 2];
         }
-        public override void OnButtonClicked(NativeMethods.MOUSE_EVENT_RECORD r)
+        public override void OnComponentClicked(NativeMethods.MOUSE_EVENT_RECORD r)
         {
-            MousePosX = r.dwMousePosition.X;
-            MousePosY = r.dwMousePosition.Y;
-
-            if (PositionCheck(MousePosX, MousePosY)) 
+            if (PositionCheck(PosX, PosY, r.dwMousePosition.X, r.dwMousePosition.Y, Width, Height)) 
                 _buttonClickOperation?.Invoke();
         }
 
         public override void OnButtonHover(NativeMethods.MOUSE_EVENT_RECORD r)
         {
-            MousePosX = r.dwMousePosition.X;
-            MousePosY = r.dwMousePosition.Y;
-
-            if (PositionCheck(MousePosX, MousePosY))
+            if (PositionCheck(PosX, PosY, r.dwMousePosition.X, r.dwMousePosition.Y, Width, Height))
             {
                 CurrentColor = HoverColor;
             }
@@ -75,22 +67,6 @@ namespace CPF.Components
             Draw();
             
             Data.OutPutBuffer();
-        }
-
-        private bool PositionCheck(int posX, int posY)
-        {
-            for (int y = PosY; y < Height + PosY; y++)
-            {
-                for (int x = PosX + 1; x < Width + PosX + 1; x++)
-                {
-                    if (posX == x && posY == y)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
     }
 }

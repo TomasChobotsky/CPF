@@ -8,11 +8,12 @@ namespace CPF
     {
         public static event ConsoleMouseEvent LeftMouseClickEvent;
         public static event ConsoleMouseEvent RightMouseClickEvent;
-        public static event ConsoleMouseEvent ButtonClickEvent;
+        public static event ConsoleMouseEvent ComponentClickEvent;
         public static event ConsoleMouseEvent ButtonHoverEvent;
         
 
         public static event ConsoleKeyEvent KeyEvent;
+        public static event ConsoleKeyEvent EnterKeyEvent;
 
         public static event ConsoleWindowBufferSizeEvent WindowBufferSizeEvent;
 
@@ -44,7 +45,7 @@ namespace CPF
                                     else if (record[0].MouseEvent.dwButtonState == 0x0001 && !MouseClickDown)
                                     {
                                         MouseClickDown = true;
-                                        ButtonClickEvent?.Invoke(record[0].MouseEvent);
+                                        ComponentClickEvent?.Invoke(record[0].MouseEvent);
                                     }
                                     if (record[0].MouseEvent.dwEventFlags == 0x0001)
                                         ButtonHoverEvent?.Invoke(record[0].MouseEvent);
