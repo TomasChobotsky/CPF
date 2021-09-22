@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CPF.Components;
 
 namespace CPF
 {
@@ -12,24 +13,26 @@ namespace CPF
         public static event PropertyChangedEvent PropertyChanged;
         public delegate void PropertyChangedEvent();
 
-        public static char[,] Buffer
-        {
-            get
-            {
-                return buffer;
-            }
-            set
-            {
-                buffer = value;
-                PropertyChanged?.Invoke();
-            }
-        }
+        //Change [30, 30] to properties
+        public static ConsoleColor[,] ColorBuffer = new ConsoleColor[30, 30];
+        public static char[,] Buffer { get; set; } = new char[30, 30];
 
-        private static char[,] buffer;
-
-        static Data()
+        public static void BufferChanged()
         {
-            Buffer = new char[Console.WindowWidth, Console.WindowHeight];
+            for (int y = 0; y < 30; y++)
+            {
+                for (int x = 0; x < 30; x++)
+                {
+                    ColorBuffer[x, y] = ConsoleColor.Black;
+                }
+            }
+
+            foreach (var button in Buttons)
+            {
+                button.Draw();
+            }
+            
+            PropertyChanged?.Invoke();
         }
     }
 }

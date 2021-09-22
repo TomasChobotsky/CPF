@@ -15,6 +15,7 @@ namespace CPF
         public static event ConsoleWindowBufferSizeEvent WindowBufferSizeEvent;
 
         private static bool Run = false;
+        private static bool MouseClickDown = false;
 
 
         public static void Start()
@@ -36,8 +37,11 @@ namespace CPF
                             switch (record[0].EventType)
                             {
                                 case NativeMethods.INPUT_RECORD.MOUSE_EVENT:
-                                    if (record[0].MouseEvent.dwButtonState == 0x0001)
+                                    if (record[0].MouseEvent.dwButtonState == 0x0000)
+                                        MouseClickDown = false;
+                                    else if (record[0].MouseEvent.dwButtonState == 0x0001 && !MouseClickDown)
                                     {
+                                        MouseClickDown = true;
                                         OnButtonClicked?.Invoke(record[0].MouseEvent);
                                     }
                                         //LeftMouseClickEvent?.Invoke(record[0].MouseEvent);
