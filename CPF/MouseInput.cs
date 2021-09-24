@@ -9,23 +9,44 @@ namespace CPF
 {
     public class MouseInput
     {
-        public MouseInput()
+        protected int PosX { get; set; }
+        protected int PosY { get; set; }
+        protected int Width 
         {
-            Console.CursorVisible = false;
-            IntPtr inHandle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
-            uint mode = 0;
-            NativeMethods.GetConsoleMode(inHandle, ref mode);
-            mode &= ~NativeMethods.ENABLE_QUICK_EDIT_MODE;
-            mode |= NativeMethods.ENABLE_WINDOW_INPUT;
-            mode |= NativeMethods.ENABLE_MOUSE_INPUT;
-            NativeMethods.SetConsoleMode(inHandle, mode);
-            ConsoleListener.Start();
+            get { return width;}
+            set
+            {
+                width = value;
+                TempBuffer = new char[Width, Height];
+                TempColorBuffer = new ConsoleColor[Width, Height];
+            }}
 
+        protected int Height
+        {
+            get { return height;}
+            set
+            {
+                height = value;
+                TempBuffer = new char[Width, Height];
+                TempColorBuffer = new ConsoleColor[Width, Height];
+            }
+        }
+
+        private int width;
+        private int height;
+        protected char[,] TempBuffer { get; set; }
+        protected ConsoleColor[,] TempColorBuffer { get; set; }
+        
+        public MouseInput(int posX, int posY, int width, int height)
+        {
+            PosX = posX;
+            PosY = posY;
+            Width = width;
+            Height = height;
+            
             ConsoleListener.LeftMouseClickEvent += OnLeftMouseClicked;
             ConsoleListener.ComponentClickEvent += OnComponentClicked;
             ConsoleListener.ButtonHoverEvent += OnButtonHover;
-
-
         }
 
         public virtual void OnLeftMouseClicked(NativeMethods.MOUSE_EVENT_RECORD r)
