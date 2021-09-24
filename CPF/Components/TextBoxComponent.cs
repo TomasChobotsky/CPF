@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 
 namespace CPF.Components
 {
@@ -16,49 +17,41 @@ namespace CPF.Components
             set
             {
                 text = value;
-                Data.OutPutBuffer();
+                Draw();
+                Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
             }
         }
 
         private string text;
-
-        private int Height { get; set; }
-
-        private int PosY { get; set; }
-
-        private int Width { get; set; }
-
-        private int PosX { get; set; }
         private int TempTextLength { get; set; }
         
-        public TextBoxComponent(int posX, int posY, int width, int height, ConsoleColor color, string text)
+        public TextBoxComponent(int posX, int posY, int width, int height, ConsoleColor color, string text) : base(posX, posY, width, height)
         {
-            PosX = posX;
-            PosY = posY;
-            Width = width;
-            Height = height;
             Color = color;
             Text = text;
+            TempTextLength = text.Length;
+            
+            Data.TextBoxes.Add(this);
 
             Draw();
         }
 
         public void Draw()
         {
-            for (int y = PosY; y < Height + PosY; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = PosX; x < Width + PosX; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Data.ColorBuffer[x, y] = Color;
+                    TempColorBuffer[x, y] = Color;
                 }
             }
 
-            for (int i = PosX + 2; i < TempTextLength + PosX + 2; i++)
-                Data.Buffer[i, PosY] = ' ';
+            for (int i = 2; i < TempTextLength + 2; i++)
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = ' ';
             
-            for (int i = PosX + 2; i < Text.Length + PosX + 2; i++)
+            for (int i = 2; i < Text.Length + 2; i++)
             {
-                Data.Buffer[i, (int)Math.Ceiling((double)Height / 2) + PosY - 1] = Text[i - PosX - 2];
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - 2];
             }
 
             TempTextLength = Text.Length;

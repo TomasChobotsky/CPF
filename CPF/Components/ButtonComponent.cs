@@ -4,10 +4,6 @@ namespace CPF.Components
 {
     public class ButtonComponent : MouseInput
     {
-        private int Width { get; set; }
-        private int Height { get; set; }
-        private int PosX { get; set; }
-        private int PosY { get; set; }
         private ConsoleColor Color { get; set; }
         private ConsoleColor HoverColor { get; set; }
         private ConsoleColor CurrentColor { get; set; }
@@ -18,35 +14,35 @@ namespace CPF.Components
         private ButtonOperation _buttonHoverOperation;
         private bool breakLoop = false;
 
-        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonClickMethod, ConsoleColor hoverColor)
+        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonClickMethod, ConsoleColor hoverColor) 
+            : base(posX, posY, width, height)
         {
-            Width = width;
-            Height = height;
-            PosX = posX - 1;
-            PosY = posY;
             HoverColor = hoverColor;
             Color = color;
             CurrentColor = color;
             Text = text;
             
             _buttonClickOperation = new ButtonOperation(buttonClickMethod);
+            
+            Data.Buttons.Add(this);
 
             Draw();
         }
 
         public void Draw()
         {
-            for (int y = PosY; y < Height + PosY; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = PosX; x < Width + PosX; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Data.ColorBuffer[x, y] = CurrentColor;
+                    TempColorBuffer[x, y] = CurrentColor;
                 }
             }
 
-            for (int i = PosX + 2; i < Text.Length + PosX + 2; i++)
+            
+            for (int i = 2; i < Text.Length + 2; i++)
             {
-                Data.Buffer[i, (int)Math.Ceiling((double)Height / 2) + PosY - 1] = Text[i - PosX - 2];
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - 2];
             }
         }
         public override void OnComponentClicked(NativeMethods.MOUSE_EVENT_RECORD r)
@@ -68,7 +64,7 @@ namespace CPF.Components
             
             Draw();
             
-            Data.OutPutBuffer();
+            Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
         }
     }
 }
