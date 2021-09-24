@@ -52,20 +52,43 @@ namespace CPF
                     ColorBuffer[x + posX, y + posY] = colorBuffer[x, y];
                 }
             }
-            DrawBuffer();
+            
+            for (int y = 0; y < buffer.GetLength(1); y++)
+            {
+                for (int x = 0; x < buffer.GetLength(0) + 1; x++)
+                {
+                    Console.SetCursorPosition(x + posX, y + posY);
+                    Console.Write(Buffer[x + posX, y + posY]);
+                    Console.BackgroundColor = ColorBuffer[x + posX, y + posY];
+                }
+            }
+            
+            Console.SetCursorPosition(0,0);
         }
 
         public static void DrawBuffer()
         {
-            for (int y = 0; y < 30; y++)
+            for (int y = 0; y < UIBufferHeight; y++)
             {
-                for (int x = 0; x < 30; x++)
+                for (int x = 0; x < UIBufferWidth; x++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(' ');
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+            }
+            
+            for (int y = 0; y < UIBufferHeight; y++)
+            {
+                for (int x = 0; x < UIBufferWidth; x++)
                 {
                     Console.SetCursorPosition(x, y);
                     Console.Write(Buffer[x, y]);
                     Console.BackgroundColor = ColorBuffer[x, y];
                 }
             }
+            
+            Console.SetCursorPosition(0,0);
         }
 
         static Data()

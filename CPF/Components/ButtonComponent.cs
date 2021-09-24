@@ -13,6 +13,7 @@ namespace CPF.Components
         private ButtonOperation _buttonClickOperation;
         private ButtonOperation _buttonHoverOperation;
         private bool breakLoop = false;
+        private bool colorChanged = false;
 
         public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonClickMethod, ConsoleColor hoverColor) 
             : base(posX, posY, width, height)
@@ -27,6 +28,8 @@ namespace CPF.Components
             Data.Buttons.Add(this);
 
             Draw();
+            
+            Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
         }
 
         public void Draw()
@@ -55,16 +58,23 @@ namespace CPF.Components
         {
             if (PositionCheck(PosX, PosY, r.dwMousePosition.X, r.dwMousePosition.Y, Width, Height))
             {
+                if (CurrentColor == Color)
+                    colorChanged = true;
                 CurrentColor = HoverColor;
             }
             else
             {
+                if (CurrentColor == HoverColor)
+                    colorChanged = true;
                 CurrentColor = Color;
             }
-            
-            Draw();
-            
-            Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
+
+            if (colorChanged)
+            {
+                Draw();
+                Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
+                colorChanged = false;
+            }
         }
     }
 }
