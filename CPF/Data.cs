@@ -66,31 +66,6 @@ namespace CPF
             Console.SetCursorPosition(0,0);
         }
 
-        public static void DrawBuffer()
-        {
-            for (int y = 0; y < UIBufferHeight; y++)
-            {
-                for (int x = 0; x < UIBufferWidth; x++)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(' ');
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-            }
-            
-            for (int y = 0; y < UIBufferHeight; y++)
-            {
-                for (int x = 0; x < UIBufferWidth; x++)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(Buffer[x, y]);
-                    Console.BackgroundColor = ColorBuffer[x, y];
-                }
-            }
-            
-            Console.SetCursorPosition(0,0);
-        }
-
         static Data()
         {
             Console.CursorVisible = false;
