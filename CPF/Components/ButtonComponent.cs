@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace CPF.Components
 {
@@ -7,7 +8,21 @@ namespace CPF.Components
         private ConsoleColor Color { get; set; }
         private ConsoleColor HoverColor { get; set; }
         private ConsoleColor CurrentColor { get; set; }
-        private string Text { get; set; }
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+            set
+            {
+                text = value;
+                Draw();
+                Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
+            }
+        }
+
+        private string text;
         private delegate void ButtonOperation();
 
         private ButtonOperation _buttonClickOperation;
@@ -15,14 +30,14 @@ namespace CPF.Components
         private bool breakLoop = false;
         private bool colorChanged = false;
 
-        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, string text, Action buttonClickMethod, ConsoleColor hoverColor) 
+        public ButtonComponent(int posX, int posY, int width, int height, ConsoleColor color, ConsoleColor hoverColor, string text, Action buttonClickMethod) 
             : base(posX, posY, width, height)
         {
             HoverColor = hoverColor;
             Color = color;
             CurrentColor = color;
             Text = text;
-            
+
             _buttonClickOperation = new ButtonOperation(buttonClickMethod);
             
             Data.Buttons.Add(this);
@@ -30,6 +45,11 @@ namespace CPF.Components
             Draw();
             
             Data.ChangeBuffer(TempBuffer, TempColorBuffer, PosX, PosY);
+        }
+        public ButtonComponent(GridComponent grid, int row, int column, ConsoleColor color, ConsoleColor hoverColor, string text, Action buttonClickMethod) 
+            : this(grid.ColumnPositions[column], grid.RowPositions[row], grid.ColumnDefinitions[column], grid.RowDefinitions[row],
+                color, hoverColor, text, buttonClickMethod)
+        {
         }
 
         public void Draw()
@@ -42,10 +62,13 @@ namespace CPF.Components
                 }
             }
 
+            for (int i = 0; i < Width; i++)
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = ' ';
+
             
-            for (int i = 2; i < Text.Length + 2; i++)
+            for (int i = (int)Math.Ceiling((double)(Width - Text.Length)/2); i < Text.Length + (int)Math.Ceiling((double)(Width - Text.Length)/2); i++)
             {
-                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - 2];
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - (int)Math.Ceiling((double)(Width - Text.Length)/2)];
             }
         }
         public override void OnComponentClicked(NativeMethods.MOUSE_EVENT_RECORD r)

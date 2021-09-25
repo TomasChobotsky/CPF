@@ -35,6 +35,11 @@ namespace CPF.Components
 
             Draw();
         }
+        public TextBoxComponent(GridComponent grid, int row, int column, ConsoleColor color, string text) 
+            : this(grid.ColumnPositions[column], grid.RowPositions[row], grid.ColumnDefinitions[column], grid.RowDefinitions[row],
+                color, text)
+        {
+        }
 
         public void Draw()
         {

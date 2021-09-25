@@ -44,18 +44,22 @@ namespace CPF
 
         public static void ChangeBuffer(char[,] buffer, ConsoleColor[,] colorBuffer, int posX, int posY)
         {
-            for (int y = 0; y < buffer.GetLength(1); y++)
+            for (int y = 0; y < colorBuffer.GetLength(1); y++)
             {
-                for (int x = 0; x < buffer.GetLength(0); x++)
+                for (int x = 0; x < colorBuffer.GetLength(0); x++)
                 {
                     Buffer[x + posX, y + posY] = buffer[x, y];
                     ColorBuffer[x + posX, y + posY] = colorBuffer[x, y];
                 }
             }
             
-            for (int y = 0; y < buffer.GetLength(1); y++)
+            Console.SetCursorPosition(posX, posY);
+            Console.Write(Buffer[posX, posY]);
+            Console.BackgroundColor = ColorBuffer[posX, posY];
+            
+            for (int y = 0; y < colorBuffer.GetLength(1); y++)
             {
-                for (int x = 0; x < buffer.GetLength(0) + 1; x++)
+                for (int x = 0; x < colorBuffer.GetLength(0); x++)
                 {
                     Console.SetCursorPosition(x + posX, y + posY);
                     Console.Write(Buffer[x + posX, y + posY]);

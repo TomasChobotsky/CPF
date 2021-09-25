@@ -65,7 +65,7 @@ namespace CPF
         {
             for (int y = posY; y < height + posY; y++)
             {
-                for (int x = posX + 1; x < width + posX + 1; x++)
+                for (int x = posX; x < width + posX; x++)
                 {
                     if (x == mousePosX && y == mousePosY)
                     {
