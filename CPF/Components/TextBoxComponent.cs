@@ -51,12 +51,12 @@ namespace CPF.Components
                 }
             }
 
-            for (int i = 2; i < TempTextLength + 2; i++)
+            for (int i = 1; i < TempTextLength + 1; i++)
                 TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = ' ';
             
-            for (int i = 2; i < Text.Length + 2; i++)
+            for (int i = 1; i < Text.Length + 1; i++)
             {
-                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - 2];
+                TempBuffer[i, (int)Math.Ceiling((double)Height / 2) - 1] = Text[i - 1];
             }
 
             TempTextLength = Text.Length;
